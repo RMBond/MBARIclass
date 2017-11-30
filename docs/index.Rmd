@@ -2,29 +2,112 @@
 title: "index"
 author: "Rosealea Bond"
 date: "November 30, 2017"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
-## R Markdown
+## `geom_point()`
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r scatter}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+#data(), 
 
-```{r cars}
-summary(cars)
+g <- ggplot(data=mpg, aes(x=displ,y=hwy))
+g + geom_point()
+
+
 ```
 
-## Including Plots
+### I need `color`
 
-You can also embed plots, for example:
+```{r scatter w/ color}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+g + geom_point(aes(color=class))
+# or ggplot(data=mpg, aes(x=displ,y=hwy, color=class)) +
+#           geom_point() 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Black and white figure with `shape` = `class`
+
+```{r scatter shape}
+
+ggplot(data=mpg, aes(x=displ,y=hwy, shape=class)) +
+  geom_point() 
+```
+
+### `size`
+
+```{r scatter shape size}
+
+ggplot(data=mpg, aes(x=displ,y=hwy, size=class)) +
+  geom_point() 
+```
+
+### `size` and `color`
+
+```{r scatter shape color}
+
+ggplot(data=mpg, aes(x=cty,y=hwy, size=class)) +
+  geom_point(alpha=0.2, color="blue") 
+```
+
+### Chapter 5 example
+
+```{r ch5}
+    ggplot(data = mpg)  + 
+      geom_point(aes(x = displ, y = hwy), color = "blue")
+
+
+```
+
+##Geoms
+
+```{r geom_examples}
+
+ggplot(mpg, aes(x=drv,y=hwy))+
+  geom_boxplot()
+
+```
+
+###Geoms Violin
+
+```{r geom_violin}
+
+ggplot(mpg, aes(x=drv,y=hwy))+
+  geom_violin()
+
+```
+
+### MultipleGeoms 
+
+```{r geom_examples2}
+
+ggplot(mpg) +
+  geom_point(aes(x=displ,y=hwy)) +
+  geom_smooth(aes(x=displ,y=hwy))
+
+##redundent so you can simplify code
+
+ggplot(mpg, aes(x=displ,y=hwy)) +
+  geom_point() +
+  geom_smooth() +
+labs(title= "rellationship b/w engine size & MPG",
+     x= "Highway MPG", 
+     y= "Engine Disp.")+
+  theme_bw()
+  
+
+```
+
+
+
+
+
