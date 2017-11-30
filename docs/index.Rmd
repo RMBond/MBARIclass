@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-<<<<<<< HEAD
+
 ## `geom_point()`
 
 ```{r scatter}
@@ -105,28 +105,4 @@ labs(title= "rellationship b/w engine size & MPG",
      y= "Engine Disp.")+
   theme_bw()
   
-
 ```
-
-
-
-
-
-=======
-## Scatterplot
-
-```{r scatter}
-
-#data(), 
-
-g <- ggplot(data=mpg, aes(x=displ,y=hwy))
-g + geom_point()
-
-
-```
-
-### I need color
-
-
-
->>>>>>> 665bee75a6068e5c1903dd52587dc9773cff67d0
