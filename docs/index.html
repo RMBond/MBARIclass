@@ -627,6 +627,58 @@ gapminder %&gt;%
 ## # ... with 132 more rows, and 1 more variables: max_gdpPercap &lt;dbl&gt;</code></pre>
 </div>
 </div>
+<div id="day-2" class="section level1">
+<h1>Day 2</h1>
+<div id="finishing-with-dplyr" class="section level2">
+<h2>Finishing with <code>dplyr</code></h2>
+<div id="joining-datasets" class="section level3">
+<h3>Joining Datasets</h3>
+<pre class="r"><code>co2 &lt;- read_csv(&quot;https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/co2.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   country = col_character(),
+##   co2_2007 = col_double()
+## )</code></pre>
+<pre class="r"><code>co2 %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##          country     co2_2007
+##            &lt;chr&gt;        &lt;dbl&gt;
+## 1    Afghanistan   2937.88342
+## 2        Albania   4217.55106
+## 3        Algeria 105838.12850
+## 4 American Samoa     18.36844
+## 5         Angola  17405.00473
+## 6       Anguilla     12.35392</code></pre>
+<pre class="r"><code>co2 %&gt;% str()</code></pre>
+<pre><code>## Classes 'tbl_df', 'tbl' and 'data.frame':    12 obs. of  2 variables:
+##  $ country : chr  &quot;Afghanistan&quot; &quot;Albania&quot; &quot;Algeria&quot; &quot;American Samoa&quot; ...
+##  $ co2_2007: num  2937.9 4217.6 105838.1 18.4 17405 ...
+##  - attr(*, &quot;spec&quot;)=List of 2
+##   ..$ cols   :List of 2
+##   .. ..$ country : list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_character&quot; &quot;collector&quot;
+##   .. ..$ co2_2007: list()
+##   .. .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_double&quot; &quot;collector&quot;
+##   ..$ default: list()
+##   .. ..- attr(*, &quot;class&quot;)= chr  &quot;collector_guess&quot; &quot;collector&quot;
+##   ..- attr(*, &quot;class&quot;)= chr &quot;col_spec&quot;</code></pre>
+<pre class="r"><code>gap_2007&lt;- gapminder %&gt;% 
+  filter(year==2007)
+
+##left join gap 2007 to co2
+
+lj&lt;- left_join(gap_2007,co2, by = &quot;country&quot;)
+
+##Right join gap 2007 to co2
+
+rj &lt;- right_join(gap_2007,co2)</code></pre>
+<pre><code>## Joining, by = &quot;country&quot;</code></pre>
+</div>
+</div>
+<div id="starting-tidyr" class="section level2">
+<h2>Starting <code>tidyr</code></h2>
+</div>
+</div>
 
 
 

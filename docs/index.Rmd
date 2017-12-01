@@ -209,25 +209,131 @@ gapminder %>%
   mutate(max_gdpPercap = max(gdpPercap)) %>% 
   filter(max_gdpPercap == gdpPercap) %>% 
   arrange(max_gdpPercap) #ascending order
+```
 
+#Day 2
 
+##Finishing with `dplyr`
 
+###Joining Datasets
 
+```{r join}
+co2 <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/co2.csv")
 
+co2 %>% head()
+co2 %>% str()
 
+gap_2007<- gapminder %>% 
+  filter(year==2007)
 
+##left join gap 2007 to co2
 
+lj<- left_join(gap_2007,co2, by = "country")
 
+##Right join gap 2007 to co2
 
+rj <- right_join(gap_2007,co2)
+```
 
+##Starting `tidyr`
 
+###Example Datasets
+```{r tidyr datasets}
 
-     
+AirPassengers # wide format
+mpg # tidy format (by each observatio)
+
+gap_wide <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv')
+
+gapminder
+
+head(gap_wide)
+```
+
+##`gather()`
+Goal: Turn gap wide into a long dataset
+
+```{r gather}
+
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year, 
+         value = obs_value,
+         dplyr::starts_with ("pop"), #listing which columns to combine
+         dplyr::starts_with("lifeExp"),
+         dplyr::starts_with("gdpPercap"))
+```
+
+### A better way to ignore columns
+
+```{r gather2}
+
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year, 
+         value = obs_value,
+         -continent, -country)
 
 ```
 
+### Seperate out the year
 
+```{r seperate}
 
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year, 
+         value = obs_value,
+         -continent, -country) %>% 
+  separate(obstype_year, into = c("obs_type", "year"),
+           sep = "_", convert = T)
+
+head(gap_long)
+```
+
+###Plot Stuff
+
+Long data format
+```{r adding plots}
+
+life_df <- gap_long %>% 
+  filter(obs_type == "lifeExp",
+         continent == "Americas")
+
+head(life_df)
+
+ggplot(data = life_df, aes(x = year, y = obs_value, color = country))+
+  geom_line()
+
+```
+
+###Practise 7.7
+
+```{r play}
+
+s <- gap_long %>% 
+  filter(obs_type == "lifeExp", 
+         year >= 1982 & year <= 2007) %>% 
+  group_by(continent, year) %>% 
+  summarise(mean_cont = mean(obs_value))
+
+ggplot(s, aes(x = year, y = mean_cont, color = continent)) +
+  geom_line()+
+  labs(title="Life Expectancy",
+       x = "Year",
+       y = "Age [y]",
+       color = "Continent")+
+```
+
+##`spread()`
+
+long to wide (to make it look like the data we started with)
+
+```{r spread}
+
+gap_tolong <- gap_long %>% 
+  spread(key=obs_type, 
+        value = obs_value)
+```
+
+#Programing in R
 
 
 
