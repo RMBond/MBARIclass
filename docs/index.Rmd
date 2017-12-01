@@ -106,3 +106,129 @@ labs(title= "rellationship b/w engine size & MPG",
   theme_bw()
   
 ```
+
+
+#Data wrangling with `dplyr`
+
+```{r datawrangling}
+#reading datafile from github to r
+#read_csv is from the readr package not base r
+gapminder <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv")
+
+gapminder
+
+## Useful functions to get to know your data
+
+head(gapminder)# first six rows
+tail(gapminder)# last six rows
+
+head(gapminder,30)# passs as many lines as you want to see
+
+str(gapminder) #check out the structure of your data
+
+names(gapminder) #header
+
+dim(gapminder)# dimensions
+
+ncol(gapminder)
+nrow(gapminder)
+
+c(nrow(gapminder),ncol(gapminder)) #combine with c function
+
+summary(gapminder)#summary statistics
+
+#everything above was operating on the whole gapmnder gataset.
+
+head(gapminder$lifeExp)
+```
+##Now with `dplyr`
+
+```{r filter.example}
+
+filter(gapminder, country=="Mexico")
+
+x <- filter(gapminder,country=="Sweden")
+mean(x$lifeExp)
+#or
+mean(filter(gapminder,country=="Sweden")$lifeExp)
+
+##Pipe operator
+
+gapminder %>% head()
+
+###now use it with the Sweden example
+
+gapminder %>% 
+  filter(country=="Sweden") %>% 
+  summarise(mean(lifeExp))   #need summarise since it returns a dataframe now to a value. 
+
+##Select by columns
+
+gapminder %>% 
+  select(year, lifeExp) %>% 
+  tail()
+
+##Compine what we have learned so far
+
+gapminder %>% 
+  filter(country=="Cambodia") %>% 
+  select(country,year,pop,gdpPercap) #selects 4 of 6
+
+gapminder %>% 
+  filter(country == "Cambodia") %>% 
+  select(-continent,-lifeExp) #selects all but two mentioned (also 4 of 6)
+
+## a few more things with filter
+
+gapminder %>% 
+  filter(country == "Mexico", 
+         year == 2002)
+
+##`mutate` to add columns
+
+gapminder %>% 
+  mutate(gdp = pop * gdpPercap)
+
+##add index column
+gapminder %>% 
+  mutate(index = 1:nrow(gapminder))
+
+gapminder %>% 
+  filter(country %in% c("Egypt", "Vietnam")) %>% 
+  summarise(max(gdpPercap))
+
+## `group_by()`
+
+gapminder %>% 
+  group_by(country) %>% 
+  summarize(max_gdpPercap = max(gdpPercap))
+
+## recall year with max variable
+gapminder %>% 
+  group_by(country) %>% 
+  mutate(max_gdpPercap = max(gdpPercap)) %>% 
+  filter(max_gdpPercap == gdpPercap) %>% 
+  arrange(max_gdpPercap) #ascending order
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+```
+
+
+
+
+
+
+
